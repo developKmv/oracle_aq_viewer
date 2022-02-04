@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AQ_UTILS</title>
+  <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+  <!--    <link th:href="@{/css/style.css}" rel="stylesheet"/>-->
+  <link href="/css/style.css" rel="stylesheet"/>
+</head>
+
+<body>
+  <div class="main_block">
+
+    <div class="list-group">
+      <a href="/" class="list-group-item list-group-item-action" aria-current="true">
+        Connection database
+      </a>
+      <a href="/send_msg" class="list-group-item list-group-item-action active">Send message</a>
+      <a href="#" class="list-group-item list-group-item-action">Browse message</a>
+      <a href="#" class="list-group-item list-group-item-action">Read message</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+      <a class="list-group-item list-group-item-action disabled">disabled</a>
+    </div>
+
+    <div class="workspace">
+
+      <div class="state_connect">
+        <p th:text="${c_state}" th:if="${c_state == 'connect on'}" style="color: green">none</p>
+        <p th:text="${c_state}" th:unless="${c_state == 'connect on'}" style="color: red">none</p>
+      </div>
+
+      <div class="form_send_msg" id="send">
+        <form action="#">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder="jms_general_que">
+            <label for="floatingInput">Enter aq</label>
+        </div>
+          <div class="form-floating">
+            <textarea class="send_area" placeholder="Message text" id="floatingTextarea"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.js"></script>
+  <script src="/js/script.js"></script>
+</body>
+
+</html>

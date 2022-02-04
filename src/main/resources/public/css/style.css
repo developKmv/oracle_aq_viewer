@@ -1,0 +1,54 @@
+
+body{
+    margin:auto auto auto auto;
+    width: 50%;
+    height: 100vh;
+    /* border: 1px solid rgb(59, 89, 119);  */
+    border-left: 1px solid rgba(0,0,0,.125);
+    border-right: 1px solid rgba(0,0,0,.125);
+    background: url(/pics/bg_bggenerator_cat.png);
+}
+.main_block{
+    background-color: rgb(255, 255, 255);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-gap: 10px;
+    height: 100vh;
+}
+.workspace{
+    padding-top: 10px;
+    padding-right: 10px;
+    align-self: stretch;
+}
+
+.form_connectionORA{
+    /*width: 50%;*/
+    padding-right: 10px;
+
+}
+
+.list-group{
+    border-right: 1px solid rgba(0,0,0,.125);
+    border-radius: 0%;
+}
+
+.hide{
+    display: none;
+}
+
+.send_area{
+    height: 500px;
+    width: 100%;
+    border-radius: 3px;
+    background-color: rgb(242, 252, 255);
+}
+
+.state_connect{
+    display: flex;
+    flex-direction:row-reverse;
+    /*color: red;*/
+}
+
+.btn-danger{
+    margin-left: 20px;
+}
