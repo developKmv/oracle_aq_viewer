@@ -66,18 +66,21 @@ public class ConnectionORA {
         ods.setUser(login);
         ods.setPassword(pass);
 
-        QueueConnectionFactory connectionFactory = AQjmsFactory.getQueueConnectionFactory(ods);
-        QueueConnection connection = connectionFactory.createQueueConnection();
+        queueConnectionFactory = AQjmsFactory.getQueueConnectionFactory(ods);
+        connection = queueConnectionFactory.createQueueConnection();
         connection.start();
 
-        QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        QueueSender sender = session.createSender(null);
+        session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+        sender = session.createSender(null);
 
         logger.info("Connect to DB");
     }
 
-    public void send(String queue,String data){
-
+    public void sendTextMsg(String queueName,String data) throws JMSException {
+        queue = session.createQueue("jms_text_que");
+        TextMessage message = session.createTextMessage(data);
+        sender.send(queue, message);
+        logger.info("text message sent");
     }
 
     @Override

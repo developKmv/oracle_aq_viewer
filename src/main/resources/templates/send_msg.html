@@ -41,13 +41,13 @@
       </div>
 
       <div class="form_send_msg" id="send">
-        <form action="#">
+        <form action="/send_msg" method="post">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingInput" placeholder="jms_general_que">
+            <input type="text" class="form-control" id="floatingInput" placeholder="jms_general_que" name="queue_name" th:value="${queue_name}">
             <label for="floatingInput">Enter aq</label>
         </div>
           <div class="form-floating">
-            <textarea class="send_area" placeholder="Message text" id="floatingTextarea"></textarea>
+            <textarea class="send_area" placeholder="Message text" id="floatingTextarea" name="data"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Send</button>
         </form>
