@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import ru.mvxdev.objects.ConnectionORA;
+import ru.mvxdev.objects.QueuesList;
 
 import javax.jms.JMSException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @Controller
 public class MainController {
@@ -24,6 +27,7 @@ public class MainController {
     private String ora_pass;
     private String connection_state = "connect off";
     private String queue_name_g;
+    private ArrayList<QueuesList> queuesList;
 
     private static Logger logger = LoggerFactory.getLogger(ConnectionORA.class);
 
@@ -34,6 +38,7 @@ public class MainController {
         model.addAttribute("login",ora_login);
         model.addAttribute("pass",ora_pass);
         model.addAttribute("c_state",connection_state);
+
         return "index";
     }
 
@@ -51,27 +56,50 @@ public class MainController {
         connectionORA.initialize();
         connection_state = "connect on";
 
+        queuesList = connectionORA.queuesList();
+
         model.addAttribute("url", connectionORA.getUrl());
         model.addAttribute("login", connectionORA.getLogin());
         model.addAttribute("pass", connectionORA.getPass());
         model.addAttribute("c_state",connection_state);
+        model.addAttribute("q_list",queuesList);
 
-        return "/send_msg";
+        return "redirect:/send_msg";
     }
 
     @GetMapping("/send_msg")
     public String send_msg_page(ModelMap model) {
 
         model.addAttribute("c_state",connection_state);
+        model.addAttribute("q_list",queuesList);
+        model.addAttribute("queue_name",queue_name_g);
         return "send_msg";
     }
 
     @PostMapping("/send_msg")
     public void send_msg(@RequestParam(required = false)String queue_name,@RequestParam(required = false)String data,ModelMap model) throws JMSException {
         queue_name_g = queue_name;
+        model.addAttribute("q_list",queuesList);
         model.addAttribute("queue_name",queue_name_g);
         model.addAttribute("c_state",connection_state);
         connectionORA.sendTextMsg(queue_name,data);
 
     }
+
+    @GetMapping("/disconnect")
+    public String disconnect(ModelMap model) throws SQLException, JMSException {
+        connectionORA.disconnect();
+
+        connection_state = "connect off";
+        ora_url=null;
+        ora_login=null;
+        ora_pass=null;
+        model.addAttribute("url",ora_url);
+        model.addAttribute("login",ora_login);
+        model.addAttribute("pass",ora_pass);
+        model.addAttribute("c_state",connection_state);
+        logger.info(String.format("Disconnect %s",ora_url));
+        return "redirect:/";
+    }
+
 }

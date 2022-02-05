@@ -3,62 +3,87 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AQ_UTILS</title>
-  <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-  <!--    <link th:href="@{/css/style.css}" rel="stylesheet"/>-->
-  <link href="/css/style.css" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQ_UTILS</title>
+    <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!--    <link th:href="@{/css/style.css}" rel="stylesheet"/>-->
+    <link href="/css/style.css" rel="stylesheet"/>
 </head>
 
 <body>
-  <div class="main_block">
+<div class="main_block">
 
     <div class="list-group">
-      <a href="/" class="list-group-item list-group-item-action" aria-current="true">
-        Connection database
-      </a>
-      <a href="/send_msg" class="list-group-item list-group-item-action active">Send message</a>
-      <a href="#" class="list-group-item list-group-item-action">Browse message</a>
-      <a href="#" class="list-group-item list-group-item-action">Read message</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
-      <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <a href="/" class="list-group-item list-group-item-action" aria-current="true">
+            Connection database
+        </a>
+        <a href="/send_msg" class="list-group-item list-group-item-action active">Send message</a>
+        <a href="#" class="list-group-item list-group-item-action disabled">Browse message</a>
+        <a href="#" class="list-group-item list-group-item-action disabled">Read message</a>
+        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <div class="disconnect_c">
+            <form action="/disconnect" method="get">
+                <input class="btn btn-danger" type="submit" value="Disconnect">
+            </form>
+        </div>
     </div>
 
     <div class="workspace">
 
-      <div class="state_connect">
-        <p th:text="${c_state}" th:if="${c_state == 'connect on'}" style="color: green">none</p>
-        <p th:text="${c_state}" th:unless="${c_state == 'connect on'}" style="color: red">none</p>
-      </div>
-
-      <div class="form_send_msg" id="send">
-        <form action="/send_msg" method="post">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingInput" placeholder="jms_general_que" name="queue_name" th:value="${queue_name}">
-            <label for="floatingInput">Enter aq</label>
+        <div class="state_connect">
+            <p th:text="${c_state}" th:if="${c_state == 'connect on'}" style="color: green">none</p>
+            <p th:text="${c_state}" th:unless="${c_state == 'connect on'}" style="color: red">none</p>
         </div>
-          <div class="form-floating">
-            <textarea class="send_area" placeholder="Message text" id="floatingTextarea" name="data"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Send</button>
-        </form>
-      </div>
+
+        <div class="queues_list">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">OWNER</th>
+                    <th scope="col">NAME</th>
+                    <th scope="col">QUEUE_TABLE</th>
+                    <th scope="col">QUEUE_TYPE</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="e: ${q_list}">
+                    <td th:text="${e.owners}">none</td>
+                    <td th:text="${e.names}"  th:attr="onclick='current_q(\''+ ${e.names} + '\')'">none</td>
+                    <td th:text="${e.queuesTables}">none</td>
+                    <td th:text="${e.types}">none</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form_send_msg" id="send">
+            <form action="/send_msg" method="post">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control q_name" id="floatingInput" placeholder="jms_general_que"
+                           name="queue_name" th:value="${queue_name}">
+                </div>
+                <div class="form-floating">
+                    <textarea class="send_area" placeholder="Message text" id="floatingTextarea" name="data"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
 
     </div>
 
-  </div>
+</div>
 
-  <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.js"></script>
-  <script src="/js/script.js"></script>
+<script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.js"></script>
+<script src="/js/script.js"></script>
 </body>
 
 </html>

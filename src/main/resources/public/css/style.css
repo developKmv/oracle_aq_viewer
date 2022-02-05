@@ -1,7 +1,7 @@
 
 body{
     margin:auto auto auto auto;
-    width: 50%;
+    width: 70%;
     height: 100vh;
     /* border: 1px solid rgb(59, 89, 119);  */
     border-left: 1px solid rgba(0,0,0,.125);
@@ -37,10 +37,10 @@ body{
 }
 
 .send_area{
-    height: 500px;
+    height: 300px;
     width: 100%;
     border-radius: 3px;
-    background-color: rgb(242, 252, 255);
+    background-color: rgba(0, 0, 0, 0.075);
 }
 
 .state_connect{
@@ -51,4 +51,18 @@ body{
 
 .btn-danger{
     margin-left: 20px;
+}
+
+.queues_list{
+    display: block;
+    height: 30%;
+    width: 100%;
+    overflow: scroll;
+    margin-bottom: 1rem!important;
+    border-top: 3px solid rgb(13, 110, 253);
+    border-bottom: 3px solid rgb(13, 110, 253);
+}
+.btn-danger{
+    width: 100%;
+    margin-left: 0px;
 }

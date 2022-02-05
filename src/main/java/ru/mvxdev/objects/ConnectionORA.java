@@ -8,7 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.jms.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class ConnectionORA {
@@ -62,7 +69,7 @@ public class ConnectionORA {
 
     public void initialize() throws SQLException, JMSException {
         ods = new OracleDataSource();
-        ods.setURL(url);
+        ods.setURL("jdbc:oracle:thin:@"+url);
         ods.setUser(login);
         ods.setPassword(pass);
 
@@ -77,10 +84,16 @@ public class ConnectionORA {
     }
 
     public void sendTextMsg(String queueName,String data) throws JMSException {
-        queue = session.createQueue("jms_text_que");
+        queue = session.createQueue(queueName);
         TextMessage message = session.createTextMessage(data);
         sender.send(queue, message);
-        logger.info("text message sent");
+        logger.info(String.format("sent msg into %s",queue));
+    }
+
+    public void disconnect() throws JMSException, SQLException {
+        session.close();
+        connection.stop();
+        ods.close();
     }
 
     @Override
@@ -90,5 +103,23 @@ public class ConnectionORA {
                 ", login='" + login + '\'' +
                 ", pass='" + pass + '\'' +
                 '}';
+    }
+
+
+    public ArrayList<QueuesList> queuesList() throws SQLException {
+        Connection conn = ods.getConnection();
+        String query = "select * from DBA_QUEUES";
+        ArrayList<QueuesList> q_list = new ArrayList<>();
+
+        try(Statement stmt = conn.createStatement()){
+            ResultSet rs = stmt.executeQuery(query);
+
+            while(rs.next()){
+                q_list.add(new QueuesList(rs.getString("NAME"),rs.getString("OWNER"),
+                        rs.getString("QUEUE_TYPE"),rs.getString("QUEUE_TABLE")));
+            }
+        }
+
+        return q_list;
     }
 }

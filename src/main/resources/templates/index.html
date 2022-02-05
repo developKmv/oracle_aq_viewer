@@ -27,7 +27,11 @@
         <a class="list-group-item list-group-item-action disabled">disabled</a>
         <a class="list-group-item list-group-item-action disabled">disabled</a>
         <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
+        <div class="disconnect_c">
+            <form action="/disconnect" method="get">
+                <input class="btn btn-danger" type="submit" value="Disconnect">
+            </form>
+        </div>
     </div>
 
     <div class="workspace">
@@ -54,10 +58,8 @@
                     <input type="password" class="form-control" id="exampleInputPassword1" name="pass" th:value="${pass}">
                 </div>
                 <button type="submit" class="btn btn-primary">Connect</button>
-                <button type="button" class="btn btn-danger">Disconnect</button>
             </form>
         </div>
-
     </div>
 
 </div>

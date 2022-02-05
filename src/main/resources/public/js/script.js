@@ -54,3 +54,13 @@ function form_queue_hide(){
 submit_connora_f.onclick = form_connora_hide;
 submit_queue_f.onclick = form_queue_hide;
 */
+const input_q = document.querySelector('.q_name');
+
+function disconnect_db(){
+    fetch('/disconnect',{method:'GET'});
+}
+
+function current_q(e){
+input_q.setAttribute('value',e);
+ //fetch('/current_queue?' + new URLSearchParams({q:e}),{method:'GET'})
+}
