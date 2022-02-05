@@ -62,7 +62,12 @@ body{
     border-top: 3px solid rgb(13, 110, 253);
     border-bottom: 3px solid rgb(13, 110, 253);
 }
+
 .btn-danger{
     width: 100%;
     margin-left: 0px;
+}
+
+body{
+ overflow: hidden;
 }
