@@ -16,15 +16,20 @@ body{
     height: 100vh;
 }
 .workspace{
-    padding-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 5rem 30rem auto;
+    /*padding-top: 10px;
     padding-right: 10px;
-    align-self: stretch;
+    align-self: stretch;*/
 }
 
 .form_connectionORA{
-    /*width: 50%;*/
-    padding-right: 10px;
 
+        /*
+         width: 35%;
+        padding-right: 10px;
+        margin-left: 32%;*/
 }
 
 .list-group{
@@ -42,11 +47,25 @@ body{
     border-radius: 3px;
     background-color: rgba(0, 0, 0, 0.075);
 }
+.my_title{
+    justify-self: center;
+    align-self: end;
+    font-size: 2rem;
+}
+
+.my_title h1{
+    font-size: 2rem;
+}
 
 .state_connect{
-    display: flex;
-    flex-direction:row-reverse;
-    /*color: red;*/
+        justify-self: end;
+        margin-right: 1rem;
+    /*
+    color: red;
+       display: flex;
+        flex-direction:row-reverse;
+
+    */
 }
 
 .btn-danger{
@@ -54,13 +73,21 @@ body{
 }
 
 .queues_list{
-    display: block;
-    height: 30%;
-    width: 100%;
+   /* display: block;
+   height: 30%;
+       width: 100%;
+   */
+
+    grid-column:1/4;
+    grid-row: 2/3;
     overflow: scroll;
     margin-bottom: 1rem!important;
     border-top: 3px solid rgb(13, 110, 253);
     border-bottom: 3px solid rgb(13, 110, 253);
+}
+.form_send_msg{
+   grid-column:1/4;
+   grid-row: 3/4;
 }
 
 .btn-danger{
@@ -69,5 +96,5 @@ body{
 }
 
 body{
- overflow: hidden;
+ /*overflow: hidden;*/
 }

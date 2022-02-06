@@ -35,30 +35,50 @@
     </div>
 
     <div class="workspace">
-
+        <div>
+            <!--<p>1</p>-->
+        </div>
+        <div class="my_title">
+            <h1>oracle_aq_viewer</h1>
+        </div>
         <div class="state_connect">
             <p th:text="${c_state}" th:if="${c_state == 'connect on'}" style="color: green">none</p>
             <p th:text="${c_state}" th:unless="${c_state == 'connect on'}" style="color: red">none</p>
         </div>
-
+        <div>
+            <!--<p>4</p>-->
+        </div>
         <div class="form_connectionORA">
             <form action="/connect_ora" method="post">
                 <div class="mb-3">
-                    <label for="connection_string" class="form-label">Connection String</label>
+                    <label for="connection_string" class="form-label"><strong>Connection String</strong></label>
                     <input type="text" class="form-control" id="connection_string" aria-describedby="example_cs" name="url" th:value="${url}">
-                    <div id="example_cs" class="form-text">(example: jdbc:oracle:thin:@localhost:1521/xe)</div>
+                    <div id="example_cs" class="form-text"><b>example:</b>localhost:1521/xe</div>
                 </div>
                 <div class="mb-3">
-                    <label for="login" class="form-label">Login</label>
+                    <label for="login" class="form-label"><strong>Login</strong></label>
                     <input type="text" class="form-control" id="login" aria-describedby="login_d" name="login" th:value="${login}">
-                    <div id="login_d" class="form-text">(example: mvx)</div>
+                    <div id="login_d" class="form-text"><b>example:</b>mvx</div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <label for="exampleInputPassword1" class="form-label"><strong>Password</strong></label>
                     <input type="password" class="form-control" id="exampleInputPassword1" name="pass" th:value="${pass}">
+                    <div id="pass_d" class="form-text"><b>example:</b>*******</b></div>
                 </div>
                 <button type="submit" class="btn btn-primary">Connect</button>
             </form>
+        </div>
+        <div>
+            <!--<p>6</p>-->
+        </div>
+        <div>
+            <!--<p>7</p>-->
+        </div>
+        <div>
+            <!--<p>8</p>-->
+        </div>
+        <div>
+            <!--<p>9</p>-->
         </div>
     </div>
 
