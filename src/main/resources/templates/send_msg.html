@@ -9,98 +9,145 @@
     <title>AQ_UTILS</title>
     <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <!--    <link th:href="@{/css/style.css}" rel="stylesheet"/>-->
-    <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet" />
 </head>
 
 <body>
-<div class="main_block">
+    <div class="main_block">
 
-    <div class="list-group">
-        <a href="/" class="list-group-item list-group-item-action" aria-current="true">
-            Connection database
-        </a>
-        <a href="/send_msg" class="list-group-item list-group-item-action active">Send message</a>
-        <a href="#" class="list-group-item list-group-item-action disabled">Browse message</a>
-        <a href="#" class="list-group-item list-group-item-action disabled">Read message</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <a class="list-group-item list-group-item-action disabled">disabled</a>
-        <div class="disconnect_c">
-            <form action="/disconnect" method="get">
-                <input class="btn btn-danger" type="submit" value="Disconnect">
-            </form>
+        <div class="list-group">
+            <a href="/" class="list-group-item list-group-item-action" aria-current="true">
+                Connection database
+            </a>
+            <a href="/send_msg" class="list-group-item list-group-item-action active">Send message</a>
+            <a href="#" class="list-group-item list-group-item-action disabled">Browse message</a>
+            <a href="#" class="list-group-item list-group-item-action disabled">Read message</a>
+            <a class="list-group-item list-group-item-action disabled">disabled</a>
+            <a class="list-group-item list-group-item-action disabled">disabled</a>
+            <a class="list-group-item list-group-item-action disabled">disabled</a>
+            <a class="list-group-item list-group-item-action disabled">disabled</a>
+            <a class="list-group-item list-group-item-action disabled">disabled</a>
+            <a class="list-group-item list-group-item-action disabled">disabled</a>
+            <a class="list-group-item list-group-item-action disabled">disabled</a>
+            <a class="list-group-item list-group-item-action disabled">disabled</a>
+            <div class="disconnect_c">
+                <form action="/disconnect" method="get">
+                    <input class="btn btn-danger" type="submit" value="Disconnect">
+                </form>
+            </div>
         </div>
+
+        <div class="workspace">
+            <div class="query_props">
+                <!--<p>1</p>-->
+                <a class="badge rounded-pill bg-primary query_all" href="/allQ" role="button"
+                    onclick="active_q_all()">all Q</a>
+                <a class="badge rounded-pill bg-primary query_curr" href="/currentQ" role="button"
+                    onclick="active_q_curr()">current user Q</a>
+                <a class="badge rounded-pill bg-primary query_cust" href="#" role="button"
+                    onclick="active_q_cust()">custom filter Q</a>
+            </div>
+            <div class="my_title">
+                <!--<p>2</p>-->
+                <h1>List queues</h1>
+            </div>
+            <div class="state_connect">
+                <!--<p>3</p>-->
+                <p th:text="${c_state}" th:if="${c_state == 'connect on'}" style="color: green">none</p>
+                <p th:text="${c_state}" th:unless="${c_state == 'connect on'}" style="color: red">none</p>
+            </div>
+            <div class="queues_list">
+                <!--<p>4</p>-->
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">OWNER</th>
+                            <th scope="col">NAME</th>
+                            <th scope="col">QUEUE_TABLE</th>
+                            <th scope="col">QUEUE_TYPE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="e: ${q_list}">
+                            <td th:text="${e.owners}">none</td>
+                            <td th:text="${e.names}" th:attr="onclick='current_q(\''+ ${e.names} + '\')'">none</td>
+                            <td th:text="${e.queuesTables}">none</td>
+                            <td th:text="${e.types}">none</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <!--<p>5</p>-->
+                <p class="select_qp" th:utext="'Select queue: </b>'+${destination}"><b>Select queue:</b></p>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#send_modal">Open
+                    submission form</button>
+            </div>
+            <div>
+                <!--<p>6</p>-->
+            </div>
+            <div>
+                <!--<p>7</p>-->
+            </div>
+            <div>
+                <!--<p>8</p>-->
+                <div class="modal fade" id="send_modal" tabindex="-1" aria-labelledby="send_modal_label"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="send_modal_label">Send form</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/send_msg" method="post">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle action_select" type="button"
+                                            id="dropdownprop" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Add properties
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownprop">
+                                            <li><a class="dropdown-item" onclick="addJmsMessageId()">JMSMessageID</a>
+                                            </li>
+                                            <li><a class="dropdown-item"
+                                                    onclick="addJMSCorrelationID()">JMSCorrelationID</a></li>
+                                            <li><a class="dropdown-item" onclick="addJMSExpiration()">JMSExpiration</a>
+                                            </li>
+                                            <li><a class="dropdown-item" onclick="addJMSReplyTo()">JMSReplyTo</a></li>
+                                            <li><a class="dropdown-item" onclick="addJMSPriority()">JMSPriority</a></li>
+                                            <li><a class="dropdown-item"
+                                                    onclick="addJMSDeliveryMode()">JMSDeliveryMode</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mb-3 aq_props">
+                                        <label for="q_name" class="form-label form-control-sm">JMSDestination</label>
+                                        <input type="text" class="form-control form-control-sm" id="q_name" name="Destination" th:value="${destination}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="text_msg" class="form-label form-control-sm">Message text</label>
+                                        <textarea class="form-control" id="text_msg" rows="7" name="data"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary">Send</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <!--<p>9</p>-->
+            </div>
+        </div>
+
     </div>
 
-    <div class="workspace">
-        <div>
-            <!--<p>1</p>-->
-        </div>
-        <div class="my_title">
-            <h1>list queues</h1>
-        </div>
-        <div class="state_connect">
-            <p th:text="${c_state}" th:if="${c_state == 'connect on'}" style="color: green">none</p>
-            <p th:text="${c_state}" th:unless="${c_state == 'connect on'}" style="color: red">none</p>
-        </div>
-        <div class="queues_list">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">OWNER</th>
-                    <th scope="col">NAME</th>
-                    <th scope="col">QUEUE_TABLE</th>
-                    <th scope="col">QUEUE_TYPE</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="e: ${q_list}">
-                    <td th:text="${e.owners}">none</td>
-                    <td th:text="${e.names}"  th:attr="onclick='current_q(\''+ ${e.names} + '\')'">none</td>
-                    <td th:text="${e.queuesTables}">none</td>
-                    <td th:text="${e.types}">none</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="form_send_msg" id="send">
-            <form action="/send_msg" method="post">
-                <div class="form-floating mb-3">
-                    <p>
-                        <b>queue name</b>
-                    </p>
-                    <input type="text" class="form-control q_name" id="floatingInput" placeholder="jms_general_que"
-                           name="queue_name" th:value="${queue_name}">
-                </div>
-                <div class="form-floating">
-                    <textarea class="send_area" placeholder="Message text" id="floatingTextarea" name="data"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Send</button>
-            </form>
-        </div>
-        <div>
-            <!--<p>6</p>-->
-        </div>
-        <div>
-            <!--<p>7</p>-->
-        </div>
-        <div>
-            <!--<p>8</p>-->
-        </div>
-        <div>
-            <!--<p>9</p>-->
-        </div>
-    </div>
-
-</div>
-
-<script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.js"></script>
-<script src="/js/script.js"></script>
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.js"></script>
+    <script src="/js/script.js"></script>
 </body>
 
 </html>

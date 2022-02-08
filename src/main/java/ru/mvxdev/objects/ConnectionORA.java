@@ -8,14 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.jms.*;
+import java.sql.*;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+
+import ru.mvxdev.objects.MyMsg;
 
 @Component
 public class ConnectionORA {
@@ -33,43 +30,45 @@ public class ConnectionORA {
     private Queue queue;
 
     //-------------getters-----------------------
-    public String getUrl(){
+    public String getUrl() {
         return url;
     }
 
-    public String getLogin(){
+    public String getLogin() {
         return login;
     }
 
-    public String getPass(){
+    public String getPass() {
         return pass;
     }
 
     public OracleDataSource getOds() {
         return ods;
     }
-//----------------setters----------------------------------
+
+    //----------------setters----------------------------------
     public void setOds(OracleDataSource ods) {
         this.ods = ods;
     }
 
-    public void setUrl(String url){
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    public void setLogin(String login){
+    public void setLogin(String login) {
         this.login = login;
     }
 
-    public void setPass(String pass){
+    public void setPass(String pass) {
         this.pass = pass;
     }
 
-    public ConnectionORA(){};
+    public ConnectionORA() {
+    }
 
     public void initialize() throws SQLException, JMSException {
         ods = new OracleDataSource();
-        ods.setURL("jdbc:oracle:thin:@"+url);
+        ods.setURL("jdbc:oracle:thin:@" + url);
         ods.setUser(login);
         ods.setPassword(pass);
 
@@ -83,11 +82,44 @@ public class ConnectionORA {
         logger.info("Connect to DB");
     }
 
-    public void sendTextMsg(String queueName,String data) throws JMSException {
-        queue = session.createQueue(queueName);
-        TextMessage message = session.createTextMessage(data);
+    /*
+        public void sendTextMsg(String queueName, String data) throws JMSException {
+            queue = session.createQueue(queueName);
+            TextMessage message = session.createTextMessage(data);
+
+            sender.send(queue, message);
+            logger.info(String.format("sent msg into %s", queue));
+        }
+    */
+    public void sendTextMsg(MyMsg msg) throws JMSException {
+        queue = session.createQueue(msg.getDestination());
+        TextMessage message = session.createTextMessage(msg.getData());
+        message.setJMSDestination(queue);
+
+        if(msg.getMessageID()!=null){
+            message.setJMSMessageID(msg.getMessageID());
+        }
+        if(msg.getCorrelationID()!=null){
+            message.setJMSCorrelationID(msg.getCorrelationID());
+        }
+        if(msg.getReplyTo()!=null){
+            message.setJMSReplyTo(session.createQueue(msg.getReplyTo()));
+        }
+
+        if(msg.getExpiration() !=0){
+            System.out.println("[!]");
+            message.setJMSExpiration(msg.getExpiration());
+
+        }
+
+        message.setJMSPriority(msg.getPriority());
+        message.setJMSDeliveryMode(msg.getDeliveryMode());
+
+        System.out.println(msg);
+        System.out.println(message.getJMSExpiration());
+
         sender.send(queue, message);
-        logger.info(String.format("sent msg into %s",queue));
+        logger.info(String.format("sent msg into %s", queue));
     }
 
     public void disconnect() throws JMSException, SQLException {
@@ -105,21 +137,36 @@ public class ConnectionORA {
                 '}';
     }
 
+    public ArrayList<QueuesList> queuesList(String user) throws SQLException {
+        Connection conn = ods.getConnection();
+        String query = "select * from DBA_QUEUES dq where dq.owner = ?";
+        ArrayList<QueuesList> q_list = new ArrayList<>();
 
-    public ArrayList<QueuesList> queuesList() throws SQLException {
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, user.toUpperCase());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                q_list.add(new QueuesList(rs.getString("NAME"), rs.getString("OWNER"),
+                        rs.getString("QUEUE_TYPE"), rs.getString("QUEUE_TABLE")));
+            }
+        }
+        return q_list;
+    }
+
+    public ArrayList<QueuesList> queuesListAll() throws SQLException {
         Connection conn = ods.getConnection();
         String query = "select * from DBA_QUEUES";
         ArrayList<QueuesList> q_list = new ArrayList<>();
 
-        try(Statement stmt = conn.createStatement()){
-            ResultSet rs = stmt.executeQuery(query);
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
 
-            while(rs.next()){
-                q_list.add(new QueuesList(rs.getString("NAME"),rs.getString("OWNER"),
-                        rs.getString("QUEUE_TYPE"),rs.getString("QUEUE_TABLE")));
+            while (rs.next()) {
+                q_list.add(new QueuesList(rs.getString("NAME"), rs.getString("OWNER"),
+                        rs.getString("QUEUE_TYPE"), rs.getString("QUEUE_TABLE")));
             }
         }
-
         return q_list;
     }
 }

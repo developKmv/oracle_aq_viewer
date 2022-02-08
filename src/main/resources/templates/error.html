@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AQ_UTILS</title>
+    <title>AQ_UTILS_ERROR</title>
     <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <!--    <link th:href="@{/css/style.css}" rel="stylesheet"/>-->
     <link href="/css/style.css" rel="stylesheet"/>
 </head>
 <body>
-<div class="main_block">
-
+   <div class="main_block">
     <div class="list-group">
         <a href="/" class="list-group-item list-group-item-action active" aria-current="true">
             Connection database
@@ -38,35 +36,20 @@
         <div>
             <!--<p>1</p>-->
         </div>
-        <div class="my_title">
-            <h1>oracle_aq_viewer</h1>
-        </div>
-        <div class="state_connect">
-            <p th:text="${c_state}" th:if="${c_state == 'connect on'}" style="color: green">none</p>
-            <p th:text="${c_state}" th:unless="${c_state == 'connect on'}" style="color: red">none</p>
+        <div>
+            <h3>Error Info</h3>
         </div>
         <div>
-            <!--<p>4</p>-->
+            <!--<p>3</p>-->
         </div>
-        <div class="form_connectionORA">
-            <form action="/connect_ora" method="post">
-                <div class="mb-3">
-                    <label for="connection_string" class="form-label"><strong>Connection String</strong></label>
-                    <input type="text" class="form-control" id="connection_string" aria-describedby="example_cs" name="url" th:value="${url}">
-                    <div id="example_cs" class="form-text"><b>example:</b>localhost:1521:xe</div>
-                </div>
-                <div class="mb-3">
-                    <label for="login" class="form-label"><strong>Login</strong></label>
-                    <input type="text" class="form-control" id="login" aria-describedby="login_d" name="login" th:value="${login}">
-                    <div id="login_d" class="form-text"><b>example:</b>mvx</div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label"><strong>Password</strong></label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="pass" th:value="${pass}">
-                    <div id="pass_d" class="form-text"><b>example:</b>*******</b></div>
-                </div>
-                <button type="submit" class="btn btn-primary">Connect</button>
-            </form>
+        <div class="err_info">
+            <!--<p>4</p>-->
+            <p th:utext="'<b>HTTP ERROR CODE: </b>'+${code}">none</p>
+            <p th:utext="'<b>Exception: </b>'+${exp}">none</p>
+            <p th:utext="'<b>Message: </b>'+${err_msg}">none</p>            
+        </div>
+        <div>
+            <!--<p>5</p>-->
         </div>
         <div>
             <!--<p>6</p>-->
@@ -81,9 +64,6 @@
             <!--<p>9</p>-->
         </div>
     </div>
-
-</div>
-<script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.js"></script>
-<script src="/js/script.js"></script>
+   </div>
 </body>
 </html>

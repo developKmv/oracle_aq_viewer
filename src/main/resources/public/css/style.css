@@ -70,6 +70,7 @@ body{
 
 .btn-danger{
     margin-left: 20px;
+    border-radius: 0%;
 }
 
 .queues_list{
@@ -85,6 +86,11 @@ body{
     border-top: 3px solid rgb(13, 110, 253);
     border-bottom: 3px solid rgb(13, 110, 253);
 }
+
+.err_info{
+    grid-column:1/4;
+    grid-row: 2/3;
+}
 .form_send_msg{
    grid-column:1/4;
    grid-row: 3/4;
@@ -97,4 +103,21 @@ body{
 
 body{
  /*overflow: hidden;*/
+}
+
+.query_props a{
+  text-decoration: none;
+}
+
+.query_props a:hover{
+  color: #fff;
+}
+
+.aq_props{
+    border-top: 3px solid rgb(13, 110, 253);
+    border-bottom: 3px solid rgb(13, 110, 253);
+    padding-bottom: 3px;
+}
+.dropdown{
+margin-bottom: 3px;
 }
